@@ -3,11 +3,11 @@
     <nav>
       <nav class="flex items-center justify-between flex-wrap bg-green-400 p-6">
         <div class="flex items-center flex-shrink-0 text-white mr-6">
-          <px-icon class="mr-2"></px-icon>
+          <px-icon class="mr-2" />
           <router-link
             :to="{ name: 'home' }"
             class="font-semibold text-xl tracking-tight"
-            >PlatziExchange</router-link
+            >Platzi Exchange</router-link
           >
         </div>
         <div
@@ -21,10 +21,11 @@
 </template>
 
 <script>
-import PxIcon from "@/components/PxIcon";
+import PxIcon from '@/components/PxIcon'
 
 export default {
-  name: "PxHeader",
-  components: { PxIcon },
-};
+  name: 'PxHeader',
+
+  components: { PxIcon }
+}
 </script>
