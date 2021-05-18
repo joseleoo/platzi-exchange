@@ -15,6 +15,7 @@ export default {
     isLoading: {
       type: Boolean,
       default: false,
+    
     },
   },
   methods: {
@@ -22,5 +23,6 @@ export default {
       this.$emit("custom-click");
     },
   },
+  
 };
 </script>
