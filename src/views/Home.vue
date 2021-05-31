@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import PxAssetsTable from '@/components/PxAssetsTable'
 
 export default {
@@ -15,19 +15,23 @@ export default {
   components: { PxAssetsTable },
 
   data() {
-    return {
-
-    }
+    return {}
   },
+  computed: {
+    ...mapState({
+      assets: (state) => state.assets,
+      isLoading: (state) => state.isLoading,
+    }),
+  },
+
   methods: {
     ...mapActions({
-      
-      setAssets: 'setAssets',
+      getAssets: 'getAssets',
     }),
   },
 
   created() {
-    this.setAssets(this.assets)
+    this.getAssets()
   },
 }
 </script>

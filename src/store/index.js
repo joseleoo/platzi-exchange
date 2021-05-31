@@ -12,14 +12,13 @@ export default new Vuex.Store({
 
     },
     actions: {
-        setAssets({ commit },assets) {
+        getAssets({ commit }) {
             commit('LOADING_TRUE')
             api
-                .getAssets()
-                .then(commit('SET_ASSETS', assets))
+                .getAssetsApi()
+                .then(assets => commit('SET_ASSETS', assets))
                 .finally(commit('LOADING_FALSE'))
         }
-
     },
     mutations: {
         SET_ASSETS(state, assets) {
