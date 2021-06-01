@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 import PxButton from '@/components/PxButton'
 import api from '@/api'
 
@@ -127,26 +127,31 @@ export default {
       asset: (state) => state.asset,
       isLoading: (state) => state.isLoading,
       history: (state) => state.history,
-      markets: (state) => state.history,
+      markets: (state) => state.markets,
+    }),
+    ...mapGetters({
+      min:'min',
+      max:'max',
+      avg:'avg',
     }),
 
-    min() {
-      return Math.min(
-        ...this.history.map((h) => parseFloat(h.priceUsd).toFixed(2))
-      )
-    },
+    // min() {
+    //   return Math.min(
+    //     ...this.history.map((h) => parseFloat(h.priceUsd).toFixed(2))
+    //   )
+    // },
 
-    max() {
-      return Math.max(
-        ...this.history.map((h) => parseFloat(h.priceUsd).toFixed(2))
-      )
-    },
+    // max() {
+    //   return Math.max(
+    //     ...this.history.map((h) => parseFloat(h.priceUsd).toFixed(2))
+    //   )
+    // },
 
-    avg() {
-      return Math.abs(
-        ...this.history.map((h) => parseFloat(h.priceUsd).toFixed(2))
-      )
-    },
+    // avg() {
+    //   return Math.abs(
+    //     ...this.history.map((h) => parseFloat(h.priceUsd).toFixed(2))
+    //   )
+    // },
   },
 
   created() {

@@ -7,12 +7,29 @@ export default new Vuex.Store({
     state: {
         isLoading: false,
         assets: [],
-        asset: [],
+        asset: {},
         history: [],
         markets: []
     },
-    getter: {
-
+    getters: {
+        min(state) {
+            // console.log(state.history)
+            return Math.min(
+                ...state.history.map((h) => parseFloat(h.priceUsd).toFixed(2))
+            )
+        },
+        max(state) {
+            // console.log(state.history)
+            return Math.max(
+                ...state.history.map((h) => parseFloat(h.priceUsd).toFixed(2))
+            )
+        },
+        avg(state) {
+            // console.log(state.history)
+            return Math.abs(
+                ...state.history.map((h) => parseFloat(h.priceUsd).toFixed(2))
+            )
+        }
     },
     actions: {
         getAssets({ commit }) {
@@ -29,10 +46,9 @@ export default new Vuex.Store({
                 api.getAssetHistory(id),
                 api.getMarkets(id),
             ]).then(([asset, history, markets]) => {
-                commit('SET_DETAILS', asset, history, markets)
-                // state.asset = asset
-                // state.history = history
-                // state.markets = markets
+                commit('SET_ASSET', asset)
+                commit('SET_HISTORY', history)
+                commit('SET_MARKETS', markets)
             }).finally(() => commit('LOADING_FALSE'))
         }
     },
@@ -46,10 +62,14 @@ export default new Vuex.Store({
         LOADING_TRUE(state) {
             state.isLoading = true
         },
-        SET_DETAILS(state, asset, history, markets) {
+        SET_ASSET(state, asset) {
             state.asset = asset
+        },
+        SET_HISTORY(state, history) {
             state.history = history
+        },
+        SET_MARKETS(state, markets) {
             state.markets = markets
-        }
+        },
     }
 })
