@@ -6,7 +6,10 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         isLoading: false,
-        assets: []
+        assets: [],
+        asset: [],
+        history: [],
+        markets: []
     },
     getter: {
 
@@ -18,6 +21,19 @@ export default new Vuex.Store({
                 .getAssetsApi()
                 .then(assets => commit('SET_ASSETS', assets))
                 .finally(commit('LOADING_FALSE'))
+        },
+        getCoins({ commit }, id) {
+            commit('LOADING_TRUE')
+            Promise.all([
+                api.getAsset(id),
+                api.getAssetHistory(id),
+                api.getMarkets(id),
+            ]).then(([asset, history, markets]) => {
+                commit('SET_DETAILS', asset, history, markets)
+                // state.asset = asset
+                // state.history = history
+                // state.markets = markets
+            }).finally(() => commit('LOADING_FALSE'))
         }
     },
     mutations: {
@@ -29,6 +45,11 @@ export default new Vuex.Store({
         },
         LOADING_TRUE(state) {
             state.isLoading = true
+        },
+        SET_DETAILS(state, asset, history, markets) {
+            state.asset = asset
+            state.history = history
+            state.markets = markets
         }
     }
 })

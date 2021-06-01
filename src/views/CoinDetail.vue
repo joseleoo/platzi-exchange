@@ -105,77 +105,91 @@
 </template>
 
 <script>
-import PxButton from "@/components/PxButton";
-import api from "@/api";
+import { mapActions, mapState } from 'vuex'
+import PxButton from '@/components/PxButton'
+import api from '@/api'
 
 export default {
-  name: "CoinDetail",
+  name: 'CoinDetail',
   components: { PxButton },
 
   data() {
     return {
-      isLoading: false,
-      asset: {},
-      history: [],
-      markets: [],
-    };
+      // isLoading: false,
+      // asset: {},
+      // history: [],
+      // markets: [],
+    }
   },
 
   computed: {
+    ...mapState({
+      asset: (state) => state.asset,
+      isLoading: (state) => state.isLoading,
+      history: (state) => state.history,
+      markets: (state) => state.history,
+    }),
+
     min() {
       return Math.min(
         ...this.history.map((h) => parseFloat(h.priceUsd).toFixed(2))
-      );
+      )
     },
 
     max() {
       return Math.max(
         ...this.history.map((h) => parseFloat(h.priceUsd).toFixed(2))
-      );
+      )
     },
 
     avg() {
       return Math.abs(
         ...this.history.map((h) => parseFloat(h.priceUsd).toFixed(2))
-      );
+      )
     },
   },
 
   created() {
-    this.getCoin();
+    // this.getCoin()
+    const id = this.$route.params.id
+    this.getCoins(id)
   },
 
   methods: {
+    ...mapActions({
+      getCoins: 'getCoins',
+    }),
+
     getWebSite(exchange) {
-      this.$set(exchange, "isLoading", true);
+      this.$set(exchange, 'isLoading', true)
 
       return api
         .getExchange(exchange.exchangeId)
         .then((res) => {
-          this.$set(exchange, "url", res.exchangeUrl);
+          this.$set(exchange, 'url', res.exchangeUrl)
         })
         .finally(() => {
-          this.$set(exchange, "isLoading", false);
-        });
-    },
-    getCoin() {
-      const id = this.$route.params.id;
-      this.isLoading = true;
-
-      Promise.all([
-        api.getAsset(id),
-        api.getAssetHistory(id),
-        api.getMarkets(id),
-      ])
-        .then(([asset, history, markets]) => {
-          this.asset = asset;
-          this.history = history;
-          this.markets = markets;
+          this.$set(exchange, 'isLoading', false)
         })
-        .finally(() => (this.isLoading = false));
     },
+    // getCoin() {
+    //   const id = this.$route.params.id
+    //   this.isLoading = true
+
+    //   Promise.all([
+    //     api.getAsset(id),
+    //     api.getAssetHistory(id),
+    //     api.getMarkets(id),
+    //   ])
+    //     .then(([asset, history, markets]) => {
+    //       this.asset = asset
+    //       this.history = history
+    //       this.markets = markets
+    //     })
+    //     .finally(() => (this.isLoading = false))
+    // },
   },
-};
+}
 </script>
 
 <style scoped>
